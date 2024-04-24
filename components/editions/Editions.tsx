@@ -1,21 +1,18 @@
 import { EditionList } from "@/types/editions";
+import SingleEdition from "./SingleEdition";
+// https://www.npmjs.com/package/locale-codes
 interface EditionProps {
-  data: EditionList[];
+  editionList: EditionList[];
 }
-const Editions = async ({ data }: EditionProps) => {
+const Editions = async ({ editionList }: EditionProps) => {
   return (
     <section>
       <h3>Available Editions</h3>
-      {data.map((edition, i) => (
-        <div className="border-2" key={i}>
-          <p>{edition.name}</p>
-          <p>English Name{edition.englishName}</p>
-          <p>Type: {edition.type}</p>
-          <p>
-            Format: {edition.format === "text" ? "Text" : "Text with audio"}
-          </p>
-        </div>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
+        {editionList.map((edition, i) => (
+          <SingleEdition key={i} edition={edition} index={i} />
+        ))}
+      </div>
     </section>
   );
 };
