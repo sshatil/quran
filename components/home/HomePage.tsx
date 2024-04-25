@@ -1,26 +1,32 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditionList } from "@/types/editions";
 import Editions from "../editions/Editions";
+import { SurahList } from "@/types/surahList";
+import Surah from "../surah/Surah";
 
 interface HomepageProps {
-  editionList: EditionList[];
+  surahList: SurahList[];
+  // editionList?: EditionList[];
 }
 
-const HomePage = ({ editionList }: HomepageProps) => {
+const HomePage = ({ surahList }: HomepageProps) => {
   return (
     <section className="p-4 max-w-[1300px] m-auto">
-      <h3 className="text-2xl text-center">Read Holy Quran</h3>
-      <Tabs defaultValue="edition" className="mt-5">
+      <h3 className="text-2xl text-center">Holy Quran</h3>
+      <Tabs defaultValue="audio" className="mt-5">
         <TabsList>
-          <TabsTrigger value="edition">Edition</TabsTrigger>
+          <TabsTrigger value="audio">Audio</TabsTrigger>
           <TabsTrigger value="surah">Surah</TabsTrigger>
-          <TabsTrigger value="audio">Only Audio</TabsTrigger>
+          {/* <TabsTrigger value="edition">Edition</TabsTrigger> */}
         </TabsList>
-        <TabsContent value="edition">
-          <Editions editionList={editionList} />
+        <TabsContent value="audio">
+          <Surah surahList={surahList} />
         </TabsContent>
-        <TabsContent value="surah">Surah list</TabsContent>
-        <TabsContent value="audio">Audio list</TabsContent>
+        <TabsContent value="surah">coming soon.....</TabsContent>
+        {/* <TabsContent value="surah">Surah list</TabsContent>
+                <TabsContent value="edition">
+          <Editions editionList={editionList} />
+        </TabsContent> */}
       </Tabs>
     </section>
   );
