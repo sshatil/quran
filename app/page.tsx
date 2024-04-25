@@ -6,14 +6,13 @@ import { EditionList } from "@/types/editions";
 import { SurahList } from "@/types/surahList";
 
 const Home = async () => {
-  // const editionList: EditionList[] = await getEditionList();
+  const editionList: EditionList[] = await getEditionList();
   const surahList: SurahList[] = await getSurahList();
 
   return (
     <main>
       <Navbar />
-      {/* <HomePage editionList={editionList} /> */}
-      <HomePage surahList={surahList} />
+      <HomePage editionList={editionList} />
     </main>
   );
 };

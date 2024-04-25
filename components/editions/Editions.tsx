@@ -7,8 +7,7 @@ interface EditionProps {
 const Editions = async ({ editionList }: EditionProps) => {
   return (
     <section>
-      <h3>Available Editions</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {editionList.map((edition, i) => (
           <SingleEdition key={i} edition={edition} index={i} />
         ))}
