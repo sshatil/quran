@@ -11,6 +11,7 @@ import {
 import { SurahList } from "@/types/surahList";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import Play from "../icons/Play";
 
 interface SingleSurahProps {
   surah: SurahList;
@@ -19,22 +20,29 @@ const noto = Noto({ subsets: ["arabic"] });
 const SingleSurah = ({ surah }: SingleSurahProps) => {
   return (
     <div className="flex flex-col">
-      <Card className="flex-1">
+      <Card className="flex-1 hover:border-green-600">
         <CardHeader>
-          <CardTitle className={noto.className}>{surah.name}</CardTitle>
-          <CardDescription>{surah.englishName}</CardDescription>
+          <div className="flex justify-between items-center">
+            <div className="">
+              <CardTitle className={noto.className}>{surah.name}</CardTitle>
+              <CardDescription>{surah.englishName}</CardDescription>
+            </div>
+            <button className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer">
+              <Play />
+            </button>
+          </div>
         </CardHeader>
-        <CardContent>
+        {/* <CardContent>
           <p>English name: {surah.englishNameTranslation}</p>
           <p>Revelation: {surah.revelationType}</p>
           <p>Total Ayah: {surah.numberOfAyahs}</p>
-        </CardContent>
-        <CardFooter className="flex gap-2">
+        </CardContent> */}
+        {/* <CardFooter className="flex gap-2">
           <Link href={`/listen/ar.alafasy/${surah.number.toString()}`}>
             <Button variant="outline">Listen</Button>
           </Link>
           <Button variant="outline">Read</Button>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </div>
   );

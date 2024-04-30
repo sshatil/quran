@@ -16,7 +16,7 @@ interface SingleEditionProps {
 const SingleEdition = ({ edition, index }: SingleEditionProps) => {
   return (
     <div key={index} className="flex flex-col">
-      <Card className="flex-1">
+      <Card className="flex-1 hover:border-green-600 cursor-pointer">
         <CardHeader>
           <CardTitle>{edition.name}</CardTitle>
           <CardDescription>{edition.englishName}</CardDescription>
