@@ -8,10 +8,11 @@ const page = async ({ params }: { params: { edition: string } }) => {
   const surahList: SurahList[] = await getSurahList();
 
   return (
-    <div>
+    <div className="h-screen overflow-scroll">
       <div className="">
         <Surah surahList={surahList} />
       </div>
+      <div className="w-full absolute bottom-0">{/* <AudioPlayer /> */}</div>
     </div>
   );
 };

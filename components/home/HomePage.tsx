@@ -6,17 +6,17 @@ import Surah from "../surah/Surah";
 import AudioEditionList from "../audioEdition/AudioEditionList";
 
 interface HomepageProps {
-  // surahList: SurahList[];
+  surahList: SurahList[];
   editionList: EditionList[];
 }
 
-const HomePage = ({ editionList }: HomepageProps) => {
+const HomePage = ({ editionList, surahList }: HomepageProps) => {
   return (
     <section className="p-4 max-w-[1300px] m-auto">
       <h3 className="text-2xl text-center">Holy Quran</h3>
-      <Tabs defaultValue="audio-edition" className="mt-5">
+      {/* <Tabs defaultValue="audio" className="mt-5">
         <TabsList>
-          <TabsTrigger value="audio-edition">Audio Edition</TabsTrigger>
+          <TabsTrigger value="audio-edition">Audio</TabsTrigger>
           <TabsTrigger value="edition">Edition</TabsTrigger>
         </TabsList>
         <TabsContent value="audio-edition">
@@ -25,7 +25,8 @@ const HomePage = ({ editionList }: HomepageProps) => {
         <TabsContent value="edition">
           <Editions editionList={editionList} />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
+      <Surah surahList={surahList} />
     </section>
   );
 };
