@@ -2,8 +2,9 @@ import axios from "axios";
 
 // Create an instance of axios
 const axiosClient = axios.create({
-  baseURL: process.env.BASE_URL,
-  timeout: 10000, // Set a timeout limit
+  // baseURL: process.env.BASE_URL,
+  baseURL: "https://api.quran.com/api/v4",
+  // timeout: 10000, // Set a timeout limit
   headers: {
     "Content-Type": "application/json",
   },

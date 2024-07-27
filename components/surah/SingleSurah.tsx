@@ -15,19 +15,28 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import Play from "../icons/Play";
 import axiosClient from "@/utils/axiosClient";
+import { useAudio } from "@/store/useAudio";
 
 interface SingleSurahProps {
   surah: SurahList;
 }
 const noto = Noto({ subsets: ["arabic"] });
+
 const SingleSurah = ({ surah }: SingleSurahProps) => {
+  const { setAudioFile, audioFile } = useAudio();
+  // get specific audio file
   const handlePlay = async (id: number, reciter = 7) => {
-    console.log(reciter, id);
-    const { data } = await axiosClient.get(
-      `/chapter_recitations/${reciter}/${id}`
-    );
-    console.log(data);
+    try {
+      const { data } = await axiosClient.get(
+        `/chapter_recitations/${reciter}/${id}`
+      );
+      setAudioFile(data.audio_file);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  // console.log(audioFile);
 
   return (
     <div className="flex flex-col">

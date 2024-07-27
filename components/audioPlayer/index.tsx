@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Player from "./Player";
 import Seekbar from "./Seekbar";
 import Controls from "./Controls";
 import Volume from "./Volume";
+import { useAudio } from "@/store/useAudio";
 
 const AudioPlayer = () => {
   const [duration, setDuration] = useState(0);
@@ -15,6 +16,8 @@ const AudioPlayer = () => {
   const [shuffle, setShuffle] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  // store
+  const { audioFile } = useAudio();
 
   const handlePlayPause = () => {
     if (!isActive) return;
@@ -25,13 +28,17 @@ const AudioPlayer = () => {
       setIsPlaying(true);
     }
   };
-  // console.log("d", duration);
+  useEffect(() => {
+    if (duration === appTime) {
+      setIsPlaying(false);
+    }
+  }, [appTime, duration]);
+  console.log("d", duration);
   console.log("st", seekTime);
-  console.log("at", appTime);
+  // console.log("at", appTime);
 
   return (
     <div className="relative sm:px-12 px-8 w-full border">
-      {/* <h1>details</h1> */}
       <div className="flex-1 flex flex-col items-center justify-center">
         {/* audio player */}
         {/* audio range */}
@@ -44,7 +51,7 @@ const AudioPlayer = () => {
           appTime={appTime}
         />
         <Player
-          activeSong="https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3"
+          activeSong={audioFile.audio_url}
           volume={volume}
           isPlaying={isPlaying}
           seekTime={seekTime}
@@ -62,7 +69,7 @@ const AudioPlayer = () => {
           shuffle={shuffle}
           setShuffle={setShuffle}
           handlePlayPause={handlePlayPause}
-          // currentSongs="https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3"
+          currentSongs={audioFile.audio_url}
         />
         <Volume
           value={volume}

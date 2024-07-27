@@ -46,6 +46,7 @@ const Player = ({
       onEnded={onEnded}
       onTimeUpdate={onTimeUpdate}
       onLoadedData={onLoadedData}
+      controls
     />
   );
 };
