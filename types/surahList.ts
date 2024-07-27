@@ -1,8 +1,15 @@
 export interface SurahList {
-  number: number;
-  name: string;
-  englishName: string;
-  englishNameTranslation: string;
-  numberOfAyahs: number;
-  revelationType: string;
+  id: number;
+  revelation_place: string;
+  revelation_order: number;
+  bismillah_pre: boolean;
+  name_simple: string;
+  name_complex: string;
+  name_arabic: string;
+  verses_count: number;
+  pages: [];
+  translated_name: {
+    language_name: string;
+    name: string;
+  };
 }

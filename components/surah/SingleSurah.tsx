@@ -1,3 +1,5 @@
+"use client";
+
 import { Noto_Naskh_Arabic as Noto } from "next/font/google";
 import { EditionList } from "@/types/editions";
 import {
@@ -12,22 +14,36 @@ import { SurahList } from "@/types/surahList";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import Play from "../icons/Play";
+import axiosClient from "@/utils/axiosClient";
 
 interface SingleSurahProps {
   surah: SurahList;
 }
 const noto = Noto({ subsets: ["arabic"] });
 const SingleSurah = ({ surah }: SingleSurahProps) => {
+  const handlePlay = async (id: number, reciter = 7) => {
+    console.log(reciter, id);
+    const { data } = await axiosClient.get(
+      `/chapter_recitations/${reciter}/${id}`
+    );
+    console.log(data);
+  };
+
   return (
     <div className="flex flex-col">
       <Card className="flex-1 hover:border-green-600">
         <CardHeader>
           <div className="flex justify-between items-center">
             <div className="">
-              <CardTitle className={noto.className}>{surah.name}</CardTitle>
-              <CardDescription>{surah.englishName}</CardDescription>
+              <CardTitle className={noto.className}>
+                {surah.name_arabic}
+              </CardTitle>
+              <CardDescription>{surah.name_simple}</CardDescription>
             </div>
-            <button className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer">
+            <button
+              className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer"
+              onClick={() => handlePlay(surah.id)}
+            >
               <Play />
             </button>
           </div>

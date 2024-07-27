@@ -25,6 +25,10 @@ const AudioPlayer = () => {
       setIsPlaying(true);
     }
   };
+  // console.log("d", duration);
+  console.log("st", seekTime);
+  console.log("at", appTime);
+
   return (
     <div className="relative sm:px-12 px-8 w-full border">
       {/* <h1>details</h1> */}
@@ -58,6 +62,7 @@ const AudioPlayer = () => {
           shuffle={shuffle}
           setShuffle={setShuffle}
           handlePlayPause={handlePlayPause}
+          // currentSongs="https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3"
         />
         <Volume
           value={volume}
