@@ -16,6 +16,9 @@ const AudioPlayer = () => {
   const [shuffle, setShuffle] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  // buffer
+  const [isBuffering, setIsBuffering] = useState(false);
+
   // store
   const { audioFile } = useAudio();
 
@@ -33,9 +36,12 @@ const AudioPlayer = () => {
       setIsPlaying(false);
     }
   }, [appTime, duration]);
-  console.log("d", duration);
-  console.log("st", seekTime);
+  // console.log("d", duration);
+  // console.log("st", seekTime);
   // console.log("at", appTime);
+
+  // TODO: make seektime update function and update seektime also add buffered logic
+  // appTime
 
   return (
     <div className="relative sm:px-12 px-8 w-full border">
@@ -49,6 +55,7 @@ const AudioPlayer = () => {
           onInput={(event: any) => setSeekTime(event.target.value)}
           setSeekTime={setSeekTime}
           appTime={appTime}
+          isBuffering={isBuffering}
         />
         <Player
           activeSong={audioFile.audio_url}
@@ -57,6 +64,7 @@ const AudioPlayer = () => {
           seekTime={seekTime}
           repeat={repeat}
           // currentIndex={currentIndex}
+          setIsBuffering={setIsBuffering}
           onTimeUpdate={(event) => setAppTime(event.target.currentTime)}
           onLoadedData={(event) => setDuration(event.target.duration)}
         />

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface IAudioFile {
+interface AudioFile {
   audio_url: string;
   chapter_id: number;
   file_size: number;
@@ -8,12 +8,12 @@ interface IAudioFile {
   id: number;
 }
 
-interface IAudioState {
-  audioFile: IAudioFile;
-  setAudioFile: (data: IAudioFile) => void;
+interface AudioState {
+  audioFile: AudioFile;
+  setAudioFile: (data: AudioFile) => void;
 }
 
-export const useAudio = create<IAudioState>()((set) => ({
+export const useAudio = create<AudioState>()((set) => ({
   audioFile: {
     audio_url: "",
     chapter_id: 0,

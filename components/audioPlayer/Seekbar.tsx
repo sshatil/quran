@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "../icons/Spinner";
 
 interface SeekbarProps {
   value: number;
@@ -7,6 +8,7 @@ interface SeekbarProps {
   onInput: (event: any) => void;
   setSeekTime: (v: number) => void;
   appTime: number;
+  isBuffering: boolean;
 }
 
 const Seekbar = ({
@@ -16,6 +18,7 @@ const Seekbar = ({
   onInput,
   setSeekTime,
   appTime,
+  isBuffering,
 }: SeekbarProps) => {
   const getTime = (time: number) =>
     `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
@@ -25,11 +28,22 @@ const Seekbar = ({
       <button
         type="button"
         onClick={() => setSeekTime(appTime - 5)}
-        className="hidden lg:mr-4 lg:block text-white"
+        className="hidden lg:mr-4 lg:block var(--foreground)"
       >
         -
       </button>
-      <p className="text-white">{value === 0 ? "0:00" : getTime(value)}</p>
+      <div className="var(--foreground)">
+        {isBuffering ? (
+          <p>
+            <Spinner />
+          </p>
+        ) : value === 0 ? (
+          "0:00"
+        ) : (
+          getTime(value)
+        )}
+        {/* {value === 0 ? "0:00" : getTime(value)} */}
+      </div>
       <input
         type="range"
         step="any"
@@ -39,11 +53,11 @@ const Seekbar = ({
         onInput={onInput}
         className="w-[90%] h-1 mx-4 2xl:mx-6 rounded-lg"
       />
-      <p className="text-white">{max === 0 ? "0:00" : getTime(max)}</p>
+      <p className="var(--foreground)">{max === 0 ? "0:00" : getTime(max)}</p>
       <button
         type="button"
         onClick={() => setSeekTime(appTime + 5)}
-        className="hidden lg:ml-4 lg:block text-white"
+        className="hidden lg:ml-4 lg:block var(--foreground)"
       >
         +
       </button>

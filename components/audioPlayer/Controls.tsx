@@ -30,23 +30,27 @@ const Controls = ({
 }: ControlsProps) => (
   <div className="flex items-center justify-around md:w-36 lg:w-52 2xl:w-80 py-3">
     <Loop
-      color={repeat ? "red" : "white"}
+      color={repeat ? "red" : "var(--foreground)"}
       onClick={() => setRepeat((prev: any) => !prev)}
       className="hidden sm:block cursor-pointer"
     />
     {/* {currentSongs?.length && <Previous color="#FFF" className="cursor-pointer" onClick={handlePrevSong} />} */}
     {isPlaying ? (
       <Pause
-        color="#FFF"
+        color="var(--foreground)"
         onClick={handlePlayPause}
         className="cursor-pointer"
       />
     ) : (
-      <Play color="#FFF" onClick={handlePlayPause} className="cursor-pointer" />
+      <Play
+        color="var(--foreground)"
+        onClick={handlePlayPause}
+        className="cursor-pointer"
+      />
     )}
     {/* {currentSongs?.length && <Next color="#FFF" className="cursor-pointer" onClick={handleNextSong} />} */}
     <Shuffle
-      color={shuffle ? "red" : "white"}
+      color={shuffle ? "red" : "var(--foreground)"}
       onClick={() => setShuffle((prev: any) => !prev)}
       className="hidden sm:block cursor-pointer"
     />
