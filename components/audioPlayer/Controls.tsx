@@ -28,7 +28,7 @@ const Controls = ({
   currentSongs,
   handlePlayPause,
 }: ControlsProps) => (
-  <div className="flex items-center justify-around md:w-36 lg:w-52 2xl:w-80 py-3">
+  <div className="flex items-center justify-around md:w-36 lg:w-52 2xl:w-80 pt-1 pb-3">
     <Loop
       color={repeat ? "red" : "var(--foreground)"}
       onClick={() => setRepeat((prev: any) => !prev)}

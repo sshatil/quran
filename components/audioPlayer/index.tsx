@@ -37,15 +37,15 @@ const AudioPlayer = () => {
     }
   }, [appTime, duration]);
   // console.log("d", duration);
-  // console.log("st", seekTime);
+  console.log("st", seekTime);
   // console.log("at", appTime);
 
   // TODO: make seektime update function and update seektime also add buffered logic
   // appTime
 
   return (
-    <div className="relative sm:px-12 px-8 w-full border">
-      <div className="flex-1 flex flex-col items-center justify-center">
+    <div className="relative sm:px-12 px-8 w-full">
+      <div className="flex-1 flex flex-col items-center justify-center pb-2">
         {/* audio player */}
         {/* audio range */}
         <Seekbar

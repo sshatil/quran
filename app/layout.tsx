@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Naskh_Arabic as Noto, Alegreya } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import AudioPlayer from "@/components/audioPlayer";
 
 // const noto = Noto({ subsets: ["arabic"] });
 const alegreya = Alegreya({ subsets: ["latin"] });
@@ -27,7 +28,12 @@ export default function RootLayout({
           enableSystem
           // disableTransitionOnChange
         >
-          {children}
+          <div>
+            {children}
+            <div className="fixed left-0 right-0 bottom-0 backdrop-blur var(-background/30)">
+              <AudioPlayer />
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>

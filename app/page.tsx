@@ -14,7 +14,6 @@ const Home = async () => {
     <main>
       <Navbar />
       <HomePage editionList={editionList} surahList={surahList} />
-      <AudioPlayer />
     </main>
   );
 };
