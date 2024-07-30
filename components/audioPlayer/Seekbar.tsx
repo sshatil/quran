@@ -33,7 +33,7 @@ const Seekbar = ({
     };
     onInput(event);
   };
-  console.log(value);
+  // console.log(value);
 
   return (
     <div className="flex flex-row items-center px-4 w-full">

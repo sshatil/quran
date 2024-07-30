@@ -11,6 +11,10 @@ interface AudioFile {
 interface AudioState {
   audioFile: AudioFile;
   setAudioFile: (data: AudioFile) => void;
+  isPlaying: boolean;
+  isActive: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
+  setIsActive: (isActive: boolean) => void;
 }
 
 export const useAudio = create<AudioState>()((set) => ({
@@ -23,5 +27,14 @@ export const useAudio = create<AudioState>()((set) => ({
   },
   setAudioFile: (data) => {
     set({ audioFile: data });
+  },
+  // global audio control
+  isPlaying: false,
+  isActive: false,
+  setIsPlaying: (isPlaying) => {
+    set({ isPlaying });
+  },
+  setIsActive: (isActive) => {
+    set({ isActive });
   },
 }));

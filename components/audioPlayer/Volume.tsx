@@ -1,6 +1,7 @@
 import React from "react";
 import SpeakerLoud from "../icons/SpeakerLoud";
 import Mute from "../icons/Mute";
+import { Slider } from "../ui/slider";
 
 interface ValueProps {
   value: number;
@@ -29,7 +30,7 @@ const Volume = ({ value, min, max, onChange, setVolume }: ValueProps) => (
         min={min}
         max={max}
         onChange={onChange}
-        className="w-[40%] h-1 ml-2"
+        className="w-[40%] h-1 ml-2 accent-emerald-600"
       />
     </div>
   </div>

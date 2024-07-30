@@ -16,6 +16,7 @@ import Link from "next/link";
 import Play from "../icons/Play";
 import axiosClient from "@/utils/axiosClient";
 import { useAudio } from "@/store/useAudio";
+import Pause from "../icons/Pause";
 
 interface SingleSurahProps {
   surah: SurahList;
@@ -23,7 +24,8 @@ interface SingleSurahProps {
 const noto = Noto({ subsets: ["arabic"] });
 
 const SingleSurah = ({ surah }: SingleSurahProps) => {
-  const { setAudioFile, audioFile } = useAudio();
+  const { setAudioFile, audioFile, isPlaying, setIsActive, setIsPlaying } =
+    useAudio();
   // get specific audio file
   const handlePlay = async (id: number, reciter = 7) => {
     try {
@@ -31,6 +33,8 @@ const SingleSurah = ({ surah }: SingleSurahProps) => {
         `/chapter_recitations/${reciter}/${id}`
       );
       setAudioFile(data.audio_file);
+      setIsActive(true);
+      setIsPlaying(true);
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +57,20 @@ const SingleSurah = ({ surah }: SingleSurahProps) => {
               className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer"
               onClick={() => handlePlay(surah.id)}
             >
-              <Play />
+              {/* <Play /> */}
+              {isPlaying ? (
+                <Pause
+                  color="var(--foreground)"
+                  // onClick={handlePlayPause}
+                  className="cursor-pointer"
+                />
+              ) : (
+                <Play
+                  color="var(--foreground)"
+                  // onClick={handlePlayPause}
+                  className="cursor-pointer"
+                />
+              )}
             </button>
           </div>
         </CardHeader>
