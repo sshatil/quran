@@ -4,7 +4,7 @@ import Mute from "../icons/Mute";
 import { Slider } from "../ui/slider";
 
 interface ValueProps {
-  value: number;
+  value: number | undefined;
   min: string;
   max: string;
   onChange: (e: any) => void;
@@ -14,10 +14,10 @@ interface ValueProps {
 const Volume = ({ value, min, max, onChange, setVolume }: ValueProps) => (
   <div className="w-full">
     <div className="flex items-center justify-center">
-      {value <= 1 && value > 0.5 && (
+      {value! <= 1 && value! > 0.5 && (
         <SpeakerLoud color="var(--foreground)" onClick={() => setVolume(0)} />
       )}
-      {value <= 0.5 && value > 0 && (
+      {value! <= 0.5 && value! > 0 && (
         <SpeakerLoud color="var(--foreground)" onClick={() => setVolume(0)} />
       )}
       {value === 0 && (

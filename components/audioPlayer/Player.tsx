@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 interface PlayerProps {
   activeSong: string;
   isPlaying: boolean;
-  volume: number;
+  volume: number | undefined;
   seekTime: number;
   repeat: boolean;
   onEnded?: () => void;

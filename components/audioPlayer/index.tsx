@@ -11,13 +11,29 @@ const AudioPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
-  const [volume, setVolume] = useState(0.3);
+  const [volume, setVolume] = useState<number | undefined>();
   const [repeat, setRepeat] = useState(false);
   // buffer
   const [isBuffering, setIsBuffering] = useState(false);
 
   // store
   const { audioFile, isPlaying, setIsPlaying, isActive } = useAudio();
+
+  // store volume in localstorage
+  useEffect(() => {
+    const volumeValue = localStorage.getItem("quran-volume");
+    if (volumeValue) {
+      setVolume(Number(volumeValue));
+    } else {
+      setVolume(0.4);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (volume) {
+      localStorage.setItem("quran-volume", String(volume));
+    }
+  }, [volume]);
 
   const handlePlayPause = () => {
     if (!isActive) return;
@@ -36,7 +52,6 @@ const AudioPlayer = () => {
   // console.log("d", duration);
   // console.log("st", seekTime);
   // console.log("at", appTime);
-
   return (
     <>
       {isActive && (
