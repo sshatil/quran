@@ -1,16 +1,12 @@
+import { AudioFile } from "@/types/surahList";
 import { create } from "zustand";
-
-interface AudioFile {
-  audio_url: string;
-  chapter_id: number;
-  file_size: number;
-  format: string;
-  id: number;
-}
 
 interface AudioState {
   audioFile: AudioFile;
   setAudioFile: (data: AudioFile) => void;
+  setClearAudioFile: () => void;
+  audioFiles: AudioFile[];
+  setAudioFiles: (data: AudioFile[]) => void;
   isPlaying: boolean;
   isActive: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
@@ -27,6 +23,22 @@ export const useAudio = create<AudioState>()((set) => ({
   },
   setAudioFile: (data) => {
     set({ audioFile: data });
+  },
+  setClearAudioFile: () => {
+    set({
+      audioFile: {
+        audio_url: "",
+        chapter_id: 0,
+        file_size: 0,
+        format: "",
+        id: 0,
+      },
+    });
+  },
+  // all audio file for specific reciter
+  audioFiles: [],
+  setAudioFiles: (data) => {
+    set({ audioFiles: data });
   },
   // global audio control
   isPlaying: false,

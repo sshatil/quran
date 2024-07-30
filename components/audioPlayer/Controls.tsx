@@ -28,7 +28,12 @@ const Controls = ({
   currentSongs,
   handlePlayPause,
 }: ControlsProps) => {
-  const { setIsActive } = useAudio();
+  const { setIsActive, setClearAudioFile, setIsPlaying } = useAudio();
+  const handleClose = () => {
+    setIsActive(false);
+    setClearAudioFile();
+    setIsPlaying(false);
+  };
   return (
     <div className="flex items-center justify-around md:w-36 lg:w-52 2xl:w-80 pt-1 pb-3">
       <Loop
@@ -68,7 +73,8 @@ const Controls = ({
         width={20}
         height={20}
         className="cursor-pointer"
-        onClick={() => setIsActive(false)}
+        // onClick={() => setIsActive(false)}
+        onClick={handleClose}
       />
     </div>
   );

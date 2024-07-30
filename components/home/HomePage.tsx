@@ -1,16 +1,30 @@
+"use client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditionList } from "@/types/editions";
 import Editions from "../editions/Editions";
-import { SurahList } from "@/types/surahList";
+import { AudioFile, SurahList } from "@/types/surahList";
 import Surah from "../surah/Surah";
 import AudioEditionList from "../audioEdition/AudioEditionList";
+import { useAudio } from "@/store/useAudio";
+import { useEffect } from "react";
 
 interface HomepageProps {
   surahList: SurahList[];
   editionList: EditionList[];
+  AllChapterAudio: AudioFile[];
 }
 
-const HomePage = ({ editionList, surahList }: HomepageProps) => {
+const HomePage = ({
+  editionList,
+  surahList,
+  AllChapterAudio,
+}: HomepageProps) => {
+  const { setAudioFiles, audioFiles } = useAudio();
+  useEffect(() => {
+    setAudioFiles(AllChapterAudio);
+  }, []);
+
   return (
     <section className="p-4 max-w-[1300px] m-auto">
       <h3 className="text-2xl text-center">Holy Quran</h3>

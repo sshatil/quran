@@ -20,27 +20,20 @@ import Pause from "../icons/Pause";
 
 interface SingleSurahProps {
   surah: SurahList;
+  handlePlay: (id: number) => void;
+  handlePause: (id: number) => void;
+  // playing: number | null;
 }
 const noto = Noto({ subsets: ["arabic"] });
 
-const SingleSurah = ({ surah }: SingleSurahProps) => {
-  const { setAudioFile, audioFile, isPlaying, setIsActive, setIsPlaying } =
-    useAudio();
-  // get specific audio file
-  const handlePlay = async (id: number, reciter = 7) => {
-    try {
-      const { data } = await axiosClient.get(
-        `/chapter_recitations/${reciter}/${id}`
-      );
-      setAudioFile(data.audio_file);
-      setIsActive(true);
-      setIsPlaying(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // console.log(audioFile);
+const SingleSurah = ({
+  surah,
+  handlePlay,
+  handlePause,
+}: // playing,
+SingleSurahProps) => {
+  const { isPlaying, audioFile } = useAudio();
+  // console.log();
 
   return (
     <div className="flex flex-col">
@@ -53,22 +46,19 @@ const SingleSurah = ({ surah }: SingleSurahProps) => {
               </CardTitle>
               <CardDescription>{surah.name_simple}</CardDescription>
             </div>
-            <button
-              className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer"
-              onClick={() => handlePlay(surah.id)}
-            >
+            <button className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer">
               {/* <Play /> */}
-              {isPlaying ? (
+              {isPlaying && surah.id === audioFile.chapter_id ? (
                 <Pause
                   color="var(--foreground)"
-                  // onClick={handlePlayPause}
                   className="cursor-pointer"
+                  onClick={() => handlePause(surah.id)}
                 />
               ) : (
                 <Play
                   color="var(--foreground)"
-                  // onClick={handlePlayPause}
                   className="cursor-pointer"
+                  onClick={() => handlePlay(surah.id)}
                 />
               )}
             </button>

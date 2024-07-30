@@ -9,3 +9,13 @@ export async function getSurahList() {
 
   return data.chapters;
 }
+export async function getAllChapterAudioForSpecificReciter(reciterId: number) {
+  const { data, status } = await axiosClient.get(
+    `/chapter_recitations/${reciterId}`
+  );
+  if (status !== 200) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return data.audio_files;
+}
