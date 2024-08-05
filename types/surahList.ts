@@ -22,7 +22,7 @@ export interface AudioFile {
   format?: string;
   id?: number;
   duration: number;
-  verse_timings: [];
+  verse_timings: any[];
 }
 
 // surah details

@@ -4,9 +4,8 @@ import { getChapterDetails } from "@/hooks/useSurah";
 import React, { useEffect, useState } from "react";
 import { Noto_Naskh_Arabic as Noto } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { AudioFile, SurahVerse } from "@/types/surahList";
+import { SurahVerse } from "@/types/surahList";
 import { useAudio } from "@/store/useAudio";
-import axiosClient from "@/utils/axiosClient";
 import axios from "axios";
 
 // font
@@ -42,8 +41,14 @@ const SurahView = ({ surahId }: { surahId: string }) => {
   }, []);
 
   // global state
-  const { setAudioFile, audioFile, isPlaying, setIsActive, setIsPlaying } =
-    useAudio();
+  const {
+    setAudioFile,
+    audioFile,
+    isPlaying,
+    setIsActive,
+    setIsPlaying,
+    currentTime,
+  } = useAudio();
   // get specific audio file
   const handlePlay = async (id: number) => {
     try {
@@ -61,6 +66,27 @@ const SurahView = ({ surahId }: { surahId: string }) => {
     }
   };
 
+  // get specific word
+  const getCurrentWord = () => {
+    // get sentence
+    const sentence = audioFile?.verse_timings.find(
+      (segment) =>
+        currentTime * 1000 >= segment.timestamp_from &&
+        currentTime * 1000 < segment.timestamp_to
+    );
+    // get word
+    const surahWord = sentence?.segments?.find(
+      (segment: any, i: any) =>
+        currentTime * 1000 >= segment[1] && currentTime * 1000 < segment[2]
+    );
+    return { sentence, surahWord };
+  };
+
+  const { sentence, surahWord } = getCurrentWord();
+  useEffect(() => {
+    getCurrentWord();
+  }, [currentTime]);
+
   return (
     <div>
       {loading ? (
@@ -70,26 +96,27 @@ const SurahView = ({ surahId }: { surahId: string }) => {
           <h1 className="text-center text-2xl py-4">
             بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
           </h1>
-          <p>{audioFile.audio_url}</p>
           <button onClick={() => handlePlay(Number(surahId))}>Play</button>
           {verses?.map((verse) => (
             <div key={verse.id}>
-              {/* audio segment */}
-
-              {/* end */}
               <div className="flex flex-wrap justify-center items-end space-x-3 space-y-4 font-direction text-3xl ">
-                {verse.words.map((word: any) => (
+                {verse.words.map((word: any, i: any) => (
                   <p
                     key={word.id}
-                    className={cn(noto.className, "font-semibold")}
+                    className={cn(
+                      noto.className,
+                      "font-semibold",
+                      sentence?.verse_key === word?.verse_key &&
+                        surahWord &&
+                        surahWord[0] === i + 1
+                        ? "text-green-500"
+                        : ""
+                    )}
                   >
                     {word?.text}
                   </p>
                 ))}
               </div>
-              {/* <button onClick={() => handlePlay(verse.audio.url, verse.id)}>
-                Play
-              </button> */}
             </div>
           ))}
         </div>

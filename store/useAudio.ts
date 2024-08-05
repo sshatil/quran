@@ -11,6 +11,9 @@ interface AudioState {
   isActive: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
   setIsActive: (isActive: boolean) => void;
+  //
+  currentTime: number;
+  setCurrentTime: (time: number) => void;
 }
 
 export const useAudio = create<AudioState>()((set) => ({
@@ -52,5 +55,9 @@ export const useAudio = create<AudioState>()((set) => ({
   },
   setIsActive: (isActive) => {
     set({ isActive });
+  },
+  currentTime: 0,
+  setCurrentTime: (time) => {
+    set({ currentTime: time });
   },
 }));

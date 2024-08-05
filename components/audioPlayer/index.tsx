@@ -17,7 +17,8 @@ const AudioPlayer = () => {
   const [isBuffering, setIsBuffering] = useState(false);
 
   // store
-  const { audioFile, isPlaying, setIsPlaying, isActive } = useAudio();
+  const { audioFile, isPlaying, setIsPlaying, isActive, setCurrentTime } =
+    useAudio();
 
   // store volume in localstorage
   useEffect(() => {
@@ -51,6 +52,9 @@ const AudioPlayer = () => {
   }, [appTime, duration]);
   // console.log("d", duration);
   // console.log("st", seekTime);
+  useEffect(() => {
+    setCurrentTime(appTime);
+  }, [appTime]);
   // console.log("at", appTime);
   return (
     <>
