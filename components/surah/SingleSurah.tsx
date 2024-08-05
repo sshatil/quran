@@ -17,6 +17,7 @@ import Play from "../icons/Play";
 import axiosClient from "@/utils/axiosClient";
 import { useAudio } from "@/store/useAudio";
 import Pause from "../icons/Pause";
+import { redirect, useRouter } from "next/navigation";
 
 interface SingleSurahProps {
   surah: SurahList;
@@ -32,12 +33,20 @@ const SingleSurah = ({
   handlePause,
 }: // playing,
 SingleSurahProps) => {
+  const router = useRouter();
   const { isPlaying, audioFile } = useAudio();
   // console.log();
+  const handleClick = (surahId: number) => {
+    router.push(`/${surahId}`);
+    console.log(surahId);
+  };
 
   return (
     <div className="flex flex-col">
-      <Card className="flex-1 hover:border-green-600">
+      <Card
+        className="flex-1 hover:border-green-600"
+        onClick={() => handleClick(surah.id)}
+      >
         <CardHeader>
           <div className="flex justify-between items-center">
             <div className="">
