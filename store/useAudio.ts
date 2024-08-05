@@ -20,6 +20,8 @@ export const useAudio = create<AudioState>()((set) => ({
     file_size: 0,
     format: "",
     id: 0,
+    duration: 0,
+    verse_timings: [],
   },
   setAudioFile: (data) => {
     set({ audioFile: data });
@@ -32,6 +34,8 @@ export const useAudio = create<AudioState>()((set) => ({
         file_size: 0,
         format: "",
         id: 0,
+        duration: 0,
+        verse_timings: [],
       },
     });
   },

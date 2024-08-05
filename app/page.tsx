@@ -7,12 +7,12 @@ import {
   getSurahList,
 } from "@/hooks/useSurah";
 import { EditionList } from "@/types/editions";
-import { ALLChapterAudio, SurahList } from "@/types/surahList";
+import { AudioFile, SurahList } from "@/types/surahList";
 
 const Home = async () => {
   const editionList: EditionList[] = await getEditionList();
   const surahList: SurahList[] = await getSurahList();
-  const AllChapterAudio: ALLChapterAudio[] =
+  const AllChapterAudio: AudioFile[] =
     await getAllChapterAudioForSpecificReciter(7);
 
   return (

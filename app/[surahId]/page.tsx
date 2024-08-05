@@ -1,9 +1,7 @@
 import Navbar from "@/components/containers/Navbar";
 import SurahView from "@/components/surah/SurahView";
 
-const page = ({ params }: { params: { surahId: string } }) => {
-  console.log(params);
-
+const page = async ({ params }: { params: { surahId: string } }) => {
   return (
     <div>
       <Navbar />

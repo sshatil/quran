@@ -18,9 +18,11 @@ export interface SurahList {
 export interface AudioFile {
   audio_url: string;
   chapter_id: number;
-  file_size: number;
-  format: string;
-  id: number;
+  file_size?: number;
+  format?: string;
+  id?: number;
+  duration: number;
+  verse_timings: [];
 }
 
 // surah details
@@ -39,6 +41,10 @@ export interface SurahVerse {
   page_number: number;
   juz_number: number;
   words: Words[];
+  audio: {
+    url: string;
+    segments: [];
+  };
 }
 
 // words

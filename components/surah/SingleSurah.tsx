@@ -61,13 +61,19 @@ SingleSurahProps) => {
                 <Pause
                   color="var(--foreground)"
                   className="cursor-pointer"
-                  onClick={() => handlePause(surah.id)}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handlePause(surah.id);
+                  }}
                 />
               ) : (
                 <Play
                   color="var(--foreground)"
                   className="cursor-pointer"
-                  onClick={() => handlePlay(surah.id)}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handlePlay(surah.id);
+                  }}
                 />
               )}
             </button>
