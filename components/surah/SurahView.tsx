@@ -1,7 +1,7 @@
 "use client";
 
 import { getChapterDetails } from "@/hooks/useSurah";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Noto_Naskh_Arabic as Noto } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SurahVerse } from "@/types/surahList";
@@ -11,34 +11,20 @@ import axios from "axios";
 // font
 const noto = Noto({ subsets: ["arabic"] });
 
-const SurahView = ({ surahId }: { surahId: string }) => {
-  const [verses, setVerses] = useState<SurahVerse[]>([]);
-  const [loading, setLoading] = useState(true);
+const scrollCenter = (element: HTMLElement | null) => {
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+};
 
-  useEffect(() => {
-    const params = {
-      language: "en",
-      words: true,
-      translations: "131,161",
-      audio: 7,
-      tafsirs: "82641",
-      word_fields:
-        "verse_key,verse_id,page_number,location,text_uthmani,text_indopak,qpc_uthmani_hafs",
-      translation_fields: "resource_name,language_id",
-      fields: "text_uthmani,chapter_id,hizb_number,text_imlaei_simple",
-      page: 1,
-      per_page: 50,
-    };
-
-    const getVerses = async () => {
-      setLoading(true);
-      const data = await getChapterDetails(params, surahId);
-      setVerses(data);
-      setLoading(false);
-    };
-
-    getVerses();
-  }, []);
+const SurahView = ({
+  surahId,
+  data,
+}: {
+  surahId: string;
+  data: SurahVerse[];
+}) => {
+  const [verses, setVerses] = useState<SurahVerse[]>(data);
 
   // global state
   const {
@@ -86,41 +72,54 @@ const SurahView = ({ surahId }: { surahId: string }) => {
   useEffect(() => {
     getCurrentWord();
   }, [currentTime]);
+  // TODO: reload data when scrolling window
+  const wordRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+
+  useEffect(() => {
+    if (surahWord) {
+      const wordIndex = surahWord[0] - 1;
+      const element = wordRefs.current[wordIndex];
+      scrollCenter(element);
+    }
+  }, [sentence, surahWord]);
+
+  console.log(sentence);
 
   return (
     <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-center text-2xl py-4">
-            بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
-          </h1>
-          <button onClick={() => handlePlay(Number(surahId))}>Play</button>
-          {verses?.map((verse) => (
-            <div key={verse.id}>
-              <div className="flex flex-wrap justify-center items-end space-x-3 space-y-4 font-direction text-3xl ">
-                {verse.words.map((word: any, i: any) => (
-                  <p
-                    key={word.id}
-                    className={cn(
-                      noto.className,
-                      "font-semibold",
-                      sentence?.verse_key === word?.verse_key &&
-                        surahWord &&
-                        surahWord[0] === i + 1
-                        ? "text-green-500"
-                        : ""
-                    )}
-                  >
-                    {word?.text}
-                  </p>
-                ))}
-              </div>
+      <div className="max-w-3xl mx-auto pb-32">
+        <h1 className="text-center text-2xl py-4">
+          بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+        </h1>
+        <button onClick={() => handlePlay(Number(surahId))}>Play</button>
+        {verses?.map((verse) => (
+          <div key={verse.id}>
+            <div className="flex flex-wrap justify-center items-end space-x-3 space-y-4 font-direction text-3xl ">
+              {verse.words.map((word: any, i: any) => (
+                <p
+                  ref={(el) => {
+                    if (sentence?.verse_key === word?.verse_key) {
+                      wordRefs.current[i] = el;
+                    }
+                  }}
+                  key={word.id}
+                  className={cn(
+                    noto.className,
+                    "font-semibold",
+                    sentence?.verse_key === word?.verse_key &&
+                      surahWord &&
+                      surahWord[0] === i + 1
+                      ? "text-green-500"
+                      : ""
+                  )}
+                >
+                  {word?.text}
+                </p>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
