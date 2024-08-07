@@ -26,7 +26,7 @@ export interface AudioFile {
 }
 
 // surah details
-export interface SurahVerse {
+interface Verses {
   id: number;
   verse_number: number;
   verse_key: string;
@@ -45,6 +45,16 @@ export interface SurahVerse {
     url: string;
     segments: [];
   };
+}
+export interface SurahVerse {
+  pagination: {
+    current_page: number;
+    next_page: number | null;
+    per_page: number;
+    total_pages: number;
+    total_records: number;
+  };
+  verses: Verses[];
 }
 
 // words

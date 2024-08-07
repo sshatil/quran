@@ -1,30 +1,28 @@
 "use client";
 
 import { getChapterDetails } from "@/hooks/useSurah";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Noto_Naskh_Arabic as Noto } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SurahVerse } from "@/types/surahList";
 import { useAudio } from "@/store/useAudio";
 import axios from "axios";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import { scrollCenter } from "@/utils/scroolScreen";
 
 // font
 const noto = Noto({ subsets: ["arabic"] });
-
-const scrollCenter = (element: HTMLElement | null) => {
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-};
 
 const SurahView = ({
   surahId,
   data,
 }: {
   surahId: string;
-  data: SurahVerse[];
+  data: SurahVerse;
 }) => {
-  const [verses, setVerses] = useState<SurahVerse[]>(data);
+  const [surahVerses, setSurahVerses] = useState<SurahVerse>(data);
+  const [page, setPage] = useState(2);
+  console.log(surahVerses);
 
   // global state
   const {
@@ -35,6 +33,45 @@ const SurahView = ({
     setIsPlaying,
     currentTime,
   } = useAudio();
+
+  // fetch verses for infinite scroll
+  const fetchParams = {
+    language: "en",
+    words: true,
+    translations: "131,161",
+    audio: 7,
+    tafsirs: "82641",
+    word_fields:
+      "verse_key,verse_id,page_number,location,text_uthmani,text_indopak,qpc_uthmani_hafs",
+    translation_fields: "resource_name,language_id",
+    fields: "text_uthmani,chapter_id,hizb_number,text_imlaei_simple",
+    page: page,
+    per_page: 20,
+  };
+
+  const fetchVers = async () => {
+    const data = await getChapterDetails(fetchParams, surahId);
+    return data;
+  };
+
+  const fetchMorePosts = useCallback(async () => {
+    if (surahVerses.pagination.total_pages > 1) {
+      const newPosts = await fetchVers();
+      // setSurahVerses((prev) => [...prev, ...newPosts]);
+      setSurahVerses((prev) => ({
+        ...prev,
+        verses: [...prev.verses, ...newPosts.verses],
+        pagination: newPosts.pagination,
+      }));
+      setPage((prev) => prev + 1);
+      console.log(newPosts);
+
+      setIsFetching(false);
+    }
+  }, [page]);
+
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMorePosts);
+
   // get specific audio file
   const handlePlay = async (id: number) => {
     try {
@@ -83,8 +120,6 @@ const SurahView = ({
     }
   }, [sentence, surahWord]);
 
-  console.log(sentence);
-
   return (
     <div>
       <div className="max-w-3xl mx-auto pb-32">
@@ -92,7 +127,7 @@ const SurahView = ({
           بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
         </h1>
         <button onClick={() => handlePlay(Number(surahId))}>Play</button>
-        {verses?.map((verse) => (
+        {surahVerses?.verses.map((verse) => (
           <div key={verse.id}>
             <div className="flex flex-wrap justify-center items-end space-x-3 space-y-4 font-direction text-3xl ">
               {verse.words.map((word: any, i: any) => (

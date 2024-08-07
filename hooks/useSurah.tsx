@@ -31,5 +31,5 @@ export async function getChapterDetails(
   if (status !== 200) {
     throw new Error("Failed to fetch data");
   }
-  return data.verses;
+  return data;
 }
