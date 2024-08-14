@@ -9,6 +9,8 @@ import { useAudio } from "@/store/useAudio";
 import axios from "axios";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { scrollCenter } from "@/utils/scroolScreen";
+import Play from "../icons/Play";
+import Pause from "../icons/Pause";
 
 // font
 const noto = Noto({ subsets: ["arabic"] });
@@ -32,6 +34,7 @@ const SurahView = ({
     setIsActive,
     setIsPlaying,
     currentTime,
+    isActive,
   } = useAudio();
 
   // fetch verses for infinite scroll
@@ -120,13 +123,45 @@ const SurahView = ({
     }
   }, [sentence, surahWord]);
 
+  // handle audio pause
+  const handlePlayPause = () => {
+    if (!isActive) return;
+
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div>
       <div className="max-w-3xl mx-auto pb-32">
         <h1 className="text-center text-2xl py-4">
           بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
         </h1>
-        <button onClick={() => handlePlay(Number(surahId))}>Play</button>
+        {/* play pause btn */}
+        <div className="flex justify-center">
+          <div className="border p-2 rounded-full hover:border-primary">
+            {isPlaying ? (
+              <Pause
+                color="var(--foreground) hover:border-primary"
+                onClick={handlePlayPause}
+                className="cursor-pointer"
+                width={24}
+                height={24}
+              />
+            ) : (
+              <Play
+                color="var(--foreground)"
+                onClick={() => handlePlay(Number(surahId))}
+                className="cursor-pointer"
+                width={24}
+                height={24}
+              />
+            )}
+          </div>
+        </div>
         {surahVerses?.verses.map((verse) => (
           <div key={verse.id}>
             <div className="flex flex-wrap justify-center items-end space-x-3 space-y-4 font-direction text-3xl ">
@@ -145,7 +180,9 @@ const SurahView = ({
                       surahWord &&
                       surahWord[0] === i + 1
                       ? "text-green-500"
-                      : ""
+                      : "",
+                    i === verse.words.length - 1 &&
+                      "border rounded-full text-sm w-5 h-5 text-center"
                   )}
                 >
                   {word?.text}
