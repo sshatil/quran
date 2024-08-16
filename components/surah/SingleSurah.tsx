@@ -34,15 +34,23 @@ const SingleSurah = ({
 }: // playing,
 SingleSurahProps) => {
   const router = useRouter();
-  const { isPlaying, audioFile } = useAudio();
+  const { isPlaying, setIsPlaying, isActive, audioFile } = useAudio();
 
+  const handlePlayPause = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!isActive) return;
+
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      setIsPlaying(true);
+    }
+  };
   return (
     <div className="flex flex-col">
       <Link href={`/${surah.id}`}>
-        <Card
-          className="flex-1 hover:border-green-600 group"
-          // onClick={() => handleClick(surah.id)}
-        >
+        <Card className="flex-1 hover:border-green-600 group">
           <CardHeader>
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-4">
@@ -63,10 +71,11 @@ SingleSurahProps) => {
                   <Pause
                     color="var(--foreground)"
                     className="cursor-pointer"
-                    onClick={(e: any) => {
-                      e.stopPropagation();
-                      handlePause(surah.id);
-                    }}
+                    // onClick={(e: any) => {
+                    //   e.stopPropagation();
+                    //   handlePause(surah.id);
+                    // }}
+                    onClick={handlePlayPause}
                   />
                 ) : (
                   <Play
@@ -74,6 +83,7 @@ SingleSurahProps) => {
                     className="cursor-pointer"
                     onClick={(e: any) => {
                       e.stopPropagation();
+                      e.preventDefault();
                       handlePlay(surah.id);
                     }}
                   />
