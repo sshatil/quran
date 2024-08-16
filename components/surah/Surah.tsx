@@ -16,13 +16,6 @@ const Surah = ({ surahList }: SurahProps) => {
   // get specific audio file
   const handlePlay = async (id: number) => {
     try {
-      // const selectedSurah = audioFiles.find((surah) => surah.chapter_id === id);
-      // if (selectedSurah) {
-      //   // setPlaying(selectedSurah.chapter_id);
-      //   setAudioFile(selectedSurah);
-      //   setIsActive(true);
-      //   setIsPlaying(true);
-      // }
       const { data, status } = await axios.get(
         `https://api.qurancdn.com/api/qdc/audio/reciters/7/audio_files?chapter=${id}&segments=true`
       );

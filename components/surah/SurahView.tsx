@@ -24,7 +24,6 @@ const SurahView = ({
 }) => {
   const [surahVerses, setSurahVerses] = useState<SurahVerse>(data);
   const [page, setPage] = useState(2);
-  console.log(surahVerses);
 
   // global state
   const {
@@ -86,7 +85,6 @@ const SurahView = ({
         setIsActive(true);
         setIsPlaying(true);
       }
-      console.log(data.audio_files[0]);
     } catch (error) {
       console.error(error);
     }
