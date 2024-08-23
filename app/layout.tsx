@@ -30,7 +30,7 @@ export default function RootLayout({
         >
           <div>
             {children}
-            <div className="fixed left-0 right-0 bottom-0 backdrop-blur var(-background/30)">
+            <div className="fixed left-0 right-0 bottom-0 backdrop-blur var(-background/30) z-50">
               <AudioPlayer />
             </div>
           </div>

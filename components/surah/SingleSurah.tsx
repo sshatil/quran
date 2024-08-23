@@ -18,6 +18,7 @@ import axiosClient from "@/utils/axiosClient";
 import { useAudio } from "@/store/useAudio";
 import Pause from "../icons/Pause";
 import { redirect, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface SingleSurahProps {
   surah: SurahList;
@@ -50,7 +51,13 @@ SingleSurahProps) => {
   return (
     <div className="flex flex-col">
       <Link href={`/${surah.id}`}>
-        <Card className="flex-1 hover:border-green-600 group">
+        {/* <Card className="flex-1 hover:border-green-600 group"> */}
+        <Card
+          className={cn(
+            "flex-1 hover:border-green-600 group",
+            isPlaying && surah.id === audioFile.chapter_id && "border-green-600"
+          )}
+        >
           <CardHeader>
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-4">

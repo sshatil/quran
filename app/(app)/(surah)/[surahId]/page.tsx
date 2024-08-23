@@ -20,7 +20,6 @@ const page = async ({ params }: { params: { surahId: string } }) => {
   const verses = await getChapterDetails(fetchParams, params.surahId);
   return (
     <div>
-      <Navbar />
       <SurahView surahId={params.surahId} data={verses} />
     </div>
   );
