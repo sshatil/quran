@@ -4,11 +4,17 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-import { HomeIcon, HeartFilledIcon } from "@radix-ui/react-icons";
+import {
+  HomeIcon,
+  HeartFilledIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@radix-ui/react-icons";
 import { SurahList } from "@/types/surahList";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SurahLink from "./SurahLink";
+import { useState } from "react";
 
 export type Playlist = (typeof playlists)[number];
 
@@ -20,6 +26,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function Sidebar({ surahList, className }: SidebarProps) {
   const pathname = usePathname();
+  const [totalShowSurah, setTotalShowSurah] = useState(10);
 
   return (
     <div className={cn("pb-12 z-40", className)}>
@@ -52,11 +59,30 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
             Surah
           </h2>
-          <ScrollArea className="h-[250px] px-1">
-            {surahList.map((surah) => (
-              <SurahLink key={surah.id} surah={surah} pathname={pathname} />
-            ))}
-          </ScrollArea>
+          {/* <ScrollArea className="h-[250px] px-1"> */}
+          {surahList.slice(0, totalShowSurah).map((surah) => (
+            <SurahLink key={surah.id} surah={surah} pathname={pathname} />
+          ))}
+          {totalShowSurah === surahList.length ? (
+            <Button
+              variant={"ghost"}
+              className="w-full justify-start"
+              onClick={() => setTotalShowSurah(10)}
+            >
+              <ChevronUpIcon className="mr-2 h-4 w-4" />
+              Show Less
+            </Button>
+          ) : (
+            <Button
+              variant={"ghost"}
+              className="w-full justify-start"
+              onClick={() => setTotalShowSurah(surahList.length)}
+            >
+              <ChevronDownIcon className="mr-2 h-4 w-4" />
+              Show More
+            </Button>
+          )}
+          {/* </ScrollArea> */}
         </div>
         <div className="py-2">
           <h2 className="relative px-7 text-lg font-semibold tracking-tight">
