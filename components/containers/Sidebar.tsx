@@ -15,6 +15,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SurahLink from "./SurahLink";
 import { useState } from "react";
+import { useGlobal } from "@/store/useGlobal";
+import Cross from "../icons/Cross";
 
 export type Playlist = (typeof playlists)[number];
 
@@ -27,83 +29,95 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 export default function Sidebar({ surahList, className }: SidebarProps) {
   const pathname = usePathname();
   const [totalShowSurah, setTotalShowSurah] = useState(10);
+  const { sidebarState, setSidebarState } = useGlobal();
 
   return (
-    <div className={cn("pb-12 z-40", className)}>
-      <div className="space-y-2 py-4">
-        <div className="px-3 py-2">
-          <div className="space-y-1">
-            <Link href="/">
-              <Button
-                variant={pathname === `/` ? "default" : "ghost"}
-                className="w-full justify-start"
-              >
-                <HomeIcon className="mr-2 h-4 w-4" />
-                Home
-              </Button>
-            </Link>
-            <Link href="/">
+    <ScrollArea className="h-full py-6 pr-6 lg:py-8">
+      <div className={cn("pb-12 z-40", className)}>
+        <div
+          className={cn(
+            "absolute top-3 right-3 cursor-pointer opacity-70 hover:opacity-100",
+            sidebarState ? "block" : "hidden"
+          )}
+          onClick={() => setSidebarState(false)}
+        >
+          <Cross />
+        </div>
+        <div className="space-y-2 py-4">
+          <div className="px-3 py-2">
+            <div className="space-y-1">
+              <Link href="/">
+                <Button
+                  variant={pathname === `/` ? "default" : "ghost"}
+                  className="w-full justify-start"
+                >
+                  <HomeIcon className="mr-2 h-4 w-4" />
+                  Home
+                </Button>
+              </Link>
+              <Link href="/">
+                <Button
+                  variant={"ghost"}
+                  className="w-full justify-start"
+                  disabled
+                >
+                  <HeartFilledIcon className="mr-2 h-4 w-4" />
+                  Favorite
+                </Button>
+              </Link>
+            </div>
+          </div>
+          {/* library */}
+          <div className="px-3 py-2">
+            <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+              Surah
+            </h2>
+            {/* <ScrollArea className="h-[250px] px-1"> */}
+            {surahList.slice(0, totalShowSurah).map((surah) => (
+              <SurahLink key={surah.id} surah={surah} pathname={pathname} />
+            ))}
+            {totalShowSurah === surahList.length ? (
               <Button
                 variant={"ghost"}
                 className="w-full justify-start"
-                disabled
+                onClick={() => setTotalShowSurah(10)}
               >
-                <HeartFilledIcon className="mr-2 h-4 w-4" />
-                Favorite
+                <ChevronUpIcon className="mr-2 h-4 w-4" />
+                Show Less
               </Button>
-            </Link>
+            ) : (
+              <Button
+                variant={"ghost"}
+                className="w-full justify-start"
+                onClick={() => setTotalShowSurah(surahList.length)}
+              >
+                <ChevronDownIcon className="mr-2 h-4 w-4" />
+                Show More
+              </Button>
+            )}
+            {/* </ScrollArea> */}
+          </div>
+          <div className="py-2">
+            <h2 className="relative px-7 text-lg font-semibold tracking-tight">
+              Favorite List
+            </h2>
+            <ScrollArea className="h-[120px] px-1">
+              <div className="space-y-1 p-2">
+                {playlists?.map((playlist, i) => (
+                  <Button
+                    disabled
+                    key={`${playlist}-${i}`}
+                    variant="ghost"
+                    className="w-full justify-start font-normal"
+                  >
+                    {playlist}
+                  </Button>
+                ))}
+              </div>
+            </ScrollArea>
           </div>
         </div>
-        {/* library */}
-        <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Surah
-          </h2>
-          {/* <ScrollArea className="h-[250px] px-1"> */}
-          {surahList.slice(0, totalShowSurah).map((surah) => (
-            <SurahLink key={surah.id} surah={surah} pathname={pathname} />
-          ))}
-          {totalShowSurah === surahList.length ? (
-            <Button
-              variant={"ghost"}
-              className="w-full justify-start"
-              onClick={() => setTotalShowSurah(10)}
-            >
-              <ChevronUpIcon className="mr-2 h-4 w-4" />
-              Show Less
-            </Button>
-          ) : (
-            <Button
-              variant={"ghost"}
-              className="w-full justify-start"
-              onClick={() => setTotalShowSurah(surahList.length)}
-            >
-              <ChevronDownIcon className="mr-2 h-4 w-4" />
-              Show More
-            </Button>
-          )}
-          {/* </ScrollArea> */}
-        </div>
-        <div className="py-2">
-          <h2 className="relative px-7 text-lg font-semibold tracking-tight">
-            Favorite List
-          </h2>
-          <ScrollArea className="h-[120px] px-1">
-            <div className="space-y-1 p-2">
-              {playlists?.map((playlist, i) => (
-                <Button
-                  disabled
-                  key={`${playlist}-${i}`}
-                  variant="ghost"
-                  className="w-full justify-start font-normal"
-                >
-                  {playlist}
-                </Button>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }
