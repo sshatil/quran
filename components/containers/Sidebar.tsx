@@ -50,6 +50,7 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
                 <Button
                   variant={pathname === `/` ? "default" : "ghost"}
                   className="w-full justify-start"
+                  onClick={() => setSidebarState(false)}
                 >
                   <HomeIcon className="mr-2 h-4 w-4" />
                   Home
@@ -60,6 +61,7 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
                   variant={"ghost"}
                   className="w-full justify-start"
                   disabled
+                  onClick={() => setSidebarState(false)}
                 >
                   <HeartFilledIcon className="mr-2 h-4 w-4" />
                   Favorite
