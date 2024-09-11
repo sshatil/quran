@@ -21,6 +21,6 @@ export async function POST(req: NextRequest) {
     },
   });
   return NextResponse.redirect(url.origin, {
-    status: 301,
+    status: 201,
   });
 }

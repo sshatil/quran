@@ -16,6 +16,7 @@ export async function login(formData: FormData) {
     data
   );
 
+  console.log(error?.code, userData);
   if (error) {
     redirect("/error");
   }
