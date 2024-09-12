@@ -1,14 +1,7 @@
-import Link from "next/link";
+import SignUpForm from "@/components/auth/SignUpForm";
+import React from "react";
 
-import { cn } from "@/lib/utils";
-import LoginForm from "@/components/auth/loginForm";
-
-// export const metadata: Metadata = {
-//   title: "Authentication",
-//   description: "Authentication forms built using the components.",
-// };
-
-const Login = () => {
+const page = () => {
   return (
     <>
       <div className="container border flex justify-center items-center md:gap-4 h-screen">
@@ -38,10 +31,10 @@ const Login = () => {
           </blockquote>
         </div>
         {/* form */}
-        <LoginForm />
+        <SignUpForm />
       </div>
     </>
   );
 };
 
-export default Login;
+export default page;
