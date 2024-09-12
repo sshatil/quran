@@ -3,6 +3,7 @@ import { Noto_Naskh_Arabic as Noto, Alegreya } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import AudioPlayer from "@/components/audioPlayer";
+import { Toaster } from "@/components/ui/toaster";
 
 // const noto = Noto({ subsets: ["arabic"] });
 const alegreya = Alegreya({ subsets: ["latin"] });
@@ -34,6 +35,7 @@ export default function RootLayout({
               <AudioPlayer />
             </div>
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

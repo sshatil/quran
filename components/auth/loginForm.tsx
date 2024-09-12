@@ -17,6 +17,7 @@ import {
 import { Input } from "../ui/input";
 import { login, signup } from "@/app/(auth-pages)/login/actions";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+  const { toast } = useToast();
   // Define form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,12 +38,17 @@ const LoginForm = () => {
   });
 
   // submit handler
-  function onSubmit(values: z.infer<typeof formSchema>, event: any) {
+  async function onSubmit(values: z.infer<typeof formSchema>, event: any) {
     // Create a new FormData object and append the form values
     const formData = new FormData();
     formData.append("email", values.email);
     formData.append("password", values.password);
-    login(formData);
+    const result = await login(formData);
+    if (result?.error) {
+      toast({
+        description: result.error,
+      });
+    }
   }
   return (
     <div className="lg:p-8 w-1/2">
