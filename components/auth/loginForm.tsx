@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
-import { login, signup } from "@/app/(auth-pages)/login/actions";
+import { login } from "@/app/(auth-pages)/login/actions";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 
@@ -89,7 +89,7 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" {...field} />
+                    <Input placeholder="********" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

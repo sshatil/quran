@@ -4,7 +4,7 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <div className="container border flex justify-center items-center md:gap-4 h-screen">
+      <div className="container flex justify-center items-center md:gap-4 h-[calc(100vh-3.5rem)]">
         <div className="hidden md:block w-1/2 space-y-2">
           {/*TODO: random verse */}
           <p className="text-xl font-direction">

@@ -3,6 +3,7 @@ import Navbar from "@/components/containers/Navbar";
 import Sidebar from "@/components/containers/Sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getSurahList } from "@/hooks/useSurah";
+import { createClient } from "@/lib/supabase/server";
 import { SurahList } from "@/types/surahList";
 
 interface AppLayoutProps {
@@ -11,10 +12,15 @@ interface AppLayoutProps {
 
 export default async function AppLayout({ children }: AppLayoutProps) {
   const surahList: SurahList[] = await getSurahList();
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} />
       <div className="pl-6">
         <MobileSidebar surahList={surahList} />
       </div>
