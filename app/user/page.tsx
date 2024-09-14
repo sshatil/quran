@@ -1,12 +1,7 @@
-import { UserNav } from "@/components/user/UserNav";
+import UserNav from "@/components/user/UserSidebar";
 
 const page = () => {
-  return (
-    <div>
-      <UserNav />
-      {/* user */}
-    </div>
-  );
+  return <div>Profile section</div>;
 };
 
 export default page;

@@ -1,4 +1,4 @@
-import { UserNav } from "@/components/user/UserNav";
+import { UserNav } from "@/components/user/UserSidebar";
 
 const page = () => {
   return (
