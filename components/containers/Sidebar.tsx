@@ -32,7 +32,7 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
   const { sidebarState, setSidebarState } = useGlobal();
 
   return (
-    <ScrollArea className="h-full py-6 pr-6 lg:py-8">
+    <ScrollArea className="h-full py-6 pr-6 lg:py-8 border-r">
       <div className={cn("pb-12 z-40", className)}>
         <div
           className={cn(
@@ -56,11 +56,10 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
                   Home
                 </Button>
               </Link>
-              <Link href="/">
+              <Link href="/user/favorite">
                 <Button
                   variant={"ghost"}
                   className="w-full justify-start"
-                  disabled
                   onClick={() => setSidebarState(false)}
                 >
                   <HeartFilledIcon className="mr-2 h-4 w-4" />

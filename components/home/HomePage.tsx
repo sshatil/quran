@@ -10,7 +10,7 @@ interface HomepageProps {
 const HomePage = ({ surahList }: HomepageProps) => {
   return (
     <section className="p-4 max-w-[1300px] m-auto pb-32">
-      <h3 className="text-2xl text-center">Holy Quran</h3>
+      <h3 className="text-2xl text-center">Surah List</h3>
       <Surah surahList={surahList} />
     </section>
   );

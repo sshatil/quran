@@ -41,7 +41,7 @@ const Navbar = ({ user }: any) => {
   };
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-40 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container flex h-14 max-w-screen-2xl justify-between items-center">
         <div className="flex items-center gap-3">
           <div
@@ -70,7 +70,9 @@ const Navbar = ({ user }: any) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <Link href="/user">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem onClick={handleLogout}>
                     Logout
                   </DropdownMenuItem>
