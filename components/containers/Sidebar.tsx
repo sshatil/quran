@@ -56,7 +56,7 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
                   Home
                 </Button>
               </Link>
-              <Link href="/user/favorite">
+              <Link href="/favorite">
                 <Button
                   variant={"ghost"}
                   className="w-full justify-start"

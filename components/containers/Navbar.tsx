@@ -13,37 +13,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { createClient } from "@/lib/supabase/client";
-import { redirect } from "next/navigation";
 import { useUser } from "@/store/useUser";
 import { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { type User } from "@supabase/supabase-js";
-import { log } from "console";
 
 const Navbar = ({ user }: { user?: User | null }) => {
-  const supabase = createClient();
-  const { toast } = useToast();
-  console.log(user);
-
   const { sidebarState, setSidebarState } = useGlobal();
 
   const { user: userData, setUser } = useUser();
-  console.log(userData);
 
   useEffect(() => {
     setUser({ user: { id: user?.id, email: user?.email } });
   }, [user, setUser]);
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      setUser({});
-      toast({
-        description: "Logged out successfully",
-      });
-    }
-  };
 
   return (
     <nav className="sticky top-0 z-40 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -62,7 +43,7 @@ const Navbar = ({ user }: { user?: User | null }) => {
         <div className="flex items-center gap-5">
           <ModeToggle />
           <div className="">
-            {userData?.email ? (
+            {user?.email ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon">
@@ -78,8 +59,12 @@ const Navbar = ({ user }: { user?: User | null }) => {
                   <Link href="/user">
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem onClick={handleLogout}>
-                    Logout
+                  <DropdownMenuItem>
+                    <form action="/auth/signout" method="post">
+                      <button className="button block" type="submit">
+                        Sign out
+                      </button>
+                    </form>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

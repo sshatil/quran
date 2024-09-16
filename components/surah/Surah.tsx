@@ -4,12 +4,16 @@ import { SurahList } from "@/types/surahList";
 import SingleSurah from "./SingleSurah";
 import { useAudio } from "@/store/useAudio";
 import axios from "axios";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface SurahProps {
   surahList: SurahList[];
 }
 
 const Surah = ({ surahList }: SurahProps) => {
+  const supabase = createClient();
+  const router = useRouter();
   const { setAudioFile, audioFiles, isPlaying, setIsActive, setIsPlaying } =
     useAudio();
 
@@ -35,6 +39,18 @@ const Surah = ({ surahList }: SurahProps) => {
       setIsPlaying(false);
     }
   };
+  const handleFavorite = async (id: number, e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    // check user is authenticated or not
+
+    const { error } = await supabase.auth.getUser();
+    if (!error) {
+      console.log(id);
+    } else {
+      router.push("/login");
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
@@ -44,6 +60,7 @@ const Surah = ({ surahList }: SurahProps) => {
           surah={surah}
           handlePlay={handlePlay}
           handlePause={handlePause}
+          handleFavorite={handleFavorite}
         />
       ))}
     </div>
