@@ -52,7 +52,7 @@ const Navbar = ({ user }: { user?: User | null }) => {
                       <AvatarFallback>S</AvatarFallback>
                     </Avatar> */}
                     {/* <p className="uppercase">{user?.email.slice(0, 1)}</p> */}
-                    <p className="uppercase">{userData?.email.slice(0, 1)}</p>
+                    <p className="uppercase">{user?.email.slice(0, 1)}</p>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
