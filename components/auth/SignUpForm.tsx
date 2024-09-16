@@ -18,6 +18,7 @@ import { Input } from "../ui/input";
 import { signup } from "@/app/(auth-pages)/login/actions";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const formSchema = z
   .object({
@@ -36,6 +37,7 @@ const formSchema = z
 
 const SignUpForm = () => {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   // Define form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,20 +50,27 @@ const SignUpForm = () => {
 
   // submit handler
   async function onSubmit(values: z.infer<typeof formSchema>, event: any) {
-    // Create a new FormData object and append the form values
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-    const result = await signup(formData);
-    if (result?.error) {
+    try {
+      const formData = new FormData();
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      const result = await signup(formData);
+      if (result?.error) {
+        toast({
+          description: result.error,
+        });
+      } else {
+        const email = formData.get("email") as string;
+        toast({
+          description: `Please check your email ${email} and verify your account.`,
+        });
+      }
+    } catch (error) {
       toast({
-        description: result.error,
+        description: "An error occurred. Please try again.",
       });
-    } else {
-      const email = formData.get("email") as string;
-      toast({
-        description: `Please check your email ${email} and verify your account.`,
-      });
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -119,7 +128,12 @@ const SignUpForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+              loading={isLoading}
+              disabled={isLoading}
+            >
               Sign Up
             </Button>
           </form>

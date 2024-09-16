@@ -18,6 +18,7 @@ import { Input } from "../ui/input";
 import { login } from "@/app/(auth-pages)/login/actions";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -28,6 +29,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   // Define form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,15 +41,24 @@ const LoginForm = () => {
 
   // submit handler
   async function onSubmit(values: z.infer<typeof formSchema>, event: any) {
-    // Create a new FormData object and append the form values
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-    const result = await login(formData);
-    if (result?.error) {
+    try {
+      setIsLoading(true);
+      // Create a new FormData object and append the form values
+      const formData = new FormData();
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      const result = await login(formData);
+      if (result?.error) {
+        toast({
+          description: result.error,
+        });
+      }
+    } catch (error) {
       toast({
-        description: result.error,
+        description: "An error occurred. Please try again.",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -95,7 +106,12 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+              loading={isLoading}
+              disabled={isLoading}
+            >
               Login
             </Button>
           </form>
