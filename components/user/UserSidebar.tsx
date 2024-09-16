@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface UserSidebarItems {
   title: string;
@@ -17,7 +18,7 @@ const UserSidebarItems: UserSidebarItems[] = [
   },
   {
     title: "Authentication",
-    href: "/user/account/authentication",
+    href: "/user/authentication",
   },
 ];
 
@@ -35,13 +36,14 @@ export default function UserSidebar({ className }: UserSidebarProps) {
           </h2>
           <div className="space-y-1 p-2">
             {UserSidebarItems?.map((item, i) => (
-              <Button
-                key={`${item}-${i}`}
-                variant={pathname === `${item.href}` ? "outline" : "ghost"}
-                className="w-full justify-start font-normal"
-              >
-                {item.title}
-              </Button>
+              <Link href={`${item.href}`} key={`${item}-${i}`}>
+                <Button
+                  variant={pathname === `${item.href}` ? "outline" : "ghost"}
+                  className="w-full justify-start font-normal"
+                >
+                  {item.title}
+                </Button>
+              </Link>
             ))}
           </div>
         </div>

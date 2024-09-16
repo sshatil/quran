@@ -4,18 +4,21 @@ import { SurahList } from "@/types/surahList";
 interface UserState {
   user: {
     email: string;
+    id: string;
   };
-  setUser: (data: string) => void;
+  setUser: (data: any) => void;
 }
 
 export const useUser = create<UserState>()((set) => ({
   user: {
     email: "",
+    id: "",
   },
-  setUser: (data) => {
+  setUser: ({ user }) => {
     set({
       user: {
-        email: data,
+        email: user.email,
+        id: user.id,
       },
     });
   },

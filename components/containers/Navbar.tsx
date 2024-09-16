@@ -18,22 +18,27 @@ import { redirect } from "next/navigation";
 import { useUser } from "@/store/useUser";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { type User } from "@supabase/supabase-js";
+import { log } from "console";
 
-const Navbar = ({ user }: any) => {
+const Navbar = ({ user }: { user?: User | null }) => {
   const supabase = createClient();
   const { toast } = useToast();
+  console.log(user);
 
   const { sidebarState, setSidebarState } = useGlobal();
 
   const { user: userData, setUser } = useUser();
+  console.log(userData);
+
   useEffect(() => {
-    setUser(user?.email);
+    setUser({ user: { id: user?.id, email: user?.email } });
   }, [user, setUser]);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      setUser("");
+      setUser({});
       toast({
         description: "Logged out successfully",
       });
