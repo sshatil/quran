@@ -49,7 +49,6 @@ export default function Profile({ user }: { user: User | null }) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [avatar_url, setAvatarUrl] = useState<string | null>(null);
-  console.log(avatar_url);
 
   // get profile info
   const getProfile = useCallback(async () => {

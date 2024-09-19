@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "../ui/button";
+import { useDownloadImage } from "@/hooks/useDownloadImage";
 
 export default function Avatar({
   uid,
@@ -16,30 +17,9 @@ export default function Avatar({
   onUpload: (url: string) => void;
 }) {
   const supabase = createClient();
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
   const [uploading, setUploading] = useState(false);
-
-  // console.log(avatarUrl);
-
-  useEffect(() => {
-    async function downloadImage(path: string) {
-      try {
-        const { data, error } = await supabase.storage
-          .from("avatars")
-          .download(path);
-        if (error) {
-          throw error;
-        }
-
-        const url = URL.createObjectURL(data);
-        setAvatarUrl(url);
-      } catch (error) {
-        console.log("Error downloading image: ", error);
-      }
-    }
-
-    if (url) downloadImage(url);
-  }, [url, supabase]);
+  // get profile image
+  const imageUrl = useDownloadImage(url || "");
 
   const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -72,7 +52,7 @@ export default function Avatar({
   };
   return (
     <div className="flex items-center gap-4">
-      {avatarUrl ? (
+      {imageUrl ? (
         // <Image
         //   width={size}
         //   height={size}
@@ -81,7 +61,9 @@ export default function Avatar({
         //   className="avatar image"
         //   style={{ height: size, width: size }}
         // />
-        <img src={avatarUrl} alt="" className="w-36 h-36 rounded-full" />
+        <div className="w-36 h-36">
+          <img src={imageUrl} alt="" />
+        </div>
       ) : (
         // <p>{imageUrl}</p>
         <div className="border" style={{ height: size, width: size }} />

@@ -14,17 +14,28 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useUser } from "@/store/useUser";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { type User } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useDownloadImage } from "@/hooks/useDownloadImage";
 
 const Navbar = ({ user }: { user?: User | null }) => {
   const { sidebarState, setSidebarState } = useGlobal();
 
-  const { user: userData, setUser } = useUser();
+  const { setUser } = useUser();
 
   useEffect(() => {
     setUser({ user: { id: user?.id, email: user?.email } });
   }, [user, setUser]);
+
+  const [username, setUsername] = useState<string | null>(null);
+  // get profile info
+  const profile = useUserProfile(user ?? null);
+  // get profile image
+  // const imageUrl = useDownloadImage(user ?? null, profile?.avatar_url || "");
+  const imageUrl = useDownloadImage(profile?.avatar_url || "");
 
   return (
     <nav className="sticky top-0 z-40 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -46,14 +57,16 @@ const Navbar = ({ user }: { user?: User | null }) => {
             {user?.email ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    {/* <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>S</AvatarFallback>
-                    </Avatar> */}
-                    {/* <p className="uppercase">{user?.email.slice(0, 1)}</p> */}
-                    <p className="uppercase">{user?.email.slice(0, 1)}</p>
-                  </Button>
+                  {imageUrl ? (
+                    <Avatar className="w-ful h-full">
+                      <AvatarImage src={imageUrl} alt="Avatar" />
+                      <AvatarFallback>{username}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <Button variant="outline" size="icon">
+                      <p className="uppercase">{user?.email.slice(0, 1)}</p>
+                    </Button>
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <Link href="/user">
@@ -76,7 +89,6 @@ const Navbar = ({ user }: { user?: User | null }) => {
               </Link>
             )}
           </div>
-          {/* TODO: store auth in global state */}
         </div>
       </div>
     </nav>
