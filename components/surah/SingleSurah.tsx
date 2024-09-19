@@ -23,7 +23,7 @@ interface SingleSurahProps {
   surah: SurahList;
   handlePlay: (id: number) => void;
   handlePause: (id: number) => void;
-  handleFavorite: (id: number, e: any) => void;
+  handleFavorite: (surah: SurahList, e: any) => void;
   // playing: number | null;
 }
 const noto = Noto({ subsets: ["arabic"] });
@@ -68,7 +68,7 @@ SingleSurahProps) => {
               </div>
               <button
                 className="pr-2 transition duration-300 ease-in-out transform hover:scale-125"
-                onClick={(e) => handleFavorite(surah.id, e)}
+                onClick={(e) => handleFavorite(surah, e)}
               >
                 <HeartIcon className="w-5 h-5 transition duration-300 ease-in-out opacity-50" />
               </button>

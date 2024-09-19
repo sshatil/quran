@@ -39,14 +39,18 @@ const Surah = ({ surahList }: SurahProps) => {
       setIsPlaying(false);
     }
   };
-  const handleFavorite = async (id: number, e: any) => {
+  // add to favorite
+  const handleFavorite = async (surah: SurahList, e: any) => {
     e.stopPropagation();
     e.preventDefault();
     // check user is authenticated or not
 
-    const { error } = await supabase.auth.getUser();
-    if (!error) {
-      console.log(id);
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+    if (!error && user) {
+      const { data, error } = await supabase.from("favorite").insert([surah]);
     } else {
       router.push("/login");
     }
