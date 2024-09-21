@@ -6,13 +6,13 @@ import { useAudio } from "@/store/useAudio";
 import axios from "axios";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface SurahProps {
   surahList: SurahList[];
-  favoriteList: SurahList[];
 }
 
-const Surah = ({ surahList, favoriteList }: SurahProps) => {
+const Surah = ({ surahList }: SurahProps) => {
   const supabase = createClient();
   const router = useRouter();
   const { setAudioFile, audioFiles, isPlaying, setIsActive, setIsPlaying } =
@@ -38,6 +38,19 @@ const Surah = ({ surahList, favoriteList }: SurahProps) => {
     const selectedSurah = audioFiles.find((surah) => surah.chapter_id === id);
     if (selectedSurah) {
       setIsPlaying(false);
+    }
+  };
+  // fetch favorite list
+  const [favoriteList, setFavoriteList] = useState<SurahList[]>([]);
+
+  const fetchFavoriteList = async () => {
+    const { data: favoriteList, error } = await supabase
+      .from("favorite")
+      .select("*");
+    if (error) {
+      console.error("Error fetching favorite list:", error);
+    } else {
+      setFavoriteList(favoriteList ?? []); // Update the favorite list
     }
   };
   // add to favorite
@@ -66,10 +79,30 @@ const Surah = ({ surahList, favoriteList }: SurahProps) => {
           translated_name: surah.translated_name,
         },
       ]);
+      fetchFavoriteList();
     } else {
       router.push("/login");
     }
   };
+  const deleteFavorite = async (surah: SurahList, e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const { data, error } = await supabase
+      .from("favorite")
+      .delete()
+      .eq("id", surah.id);
+
+    fetchFavoriteList();
+    if (error) {
+      console.error("Error deleting favorite:", error);
+    } else {
+      console.log("Favorite deleted:", data);
+    }
+    console.log(surah);
+  };
+  useEffect(() => {
+    fetchFavoriteList();
+  }, []);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
       {surahList.map((surah) => (
@@ -79,7 +112,8 @@ const Surah = ({ surahList, favoriteList }: SurahProps) => {
           handlePlay={handlePlay}
           handlePause={handlePause}
           handleFavorite={handleFavorite}
-          favoriteList={favoriteList.some((f) => f?.id === surah.id)}
+          favoriteList={favoriteList?.some((f) => f?.id === surah.id)}
+          deleteFavorite={deleteFavorite}
         />
       ))}
     </div>

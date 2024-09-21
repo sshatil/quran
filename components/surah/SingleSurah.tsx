@@ -27,6 +27,7 @@ interface SingleSurahProps {
   handlePause: (id: number) => void;
   handleFavorite: (surah: SurahList, e: any) => void;
   favoriteList: boolean;
+  deleteFavorite: (surah: SurahList, e: any) => void;
   // playing: number | null;
 }
 const noto = Noto({ subsets: ["arabic"] });
@@ -37,6 +38,7 @@ const SingleSurah = ({
   handlePause,
   handleFavorite,
   favoriteList,
+  deleteFavorite,
 }: // playing,
 SingleSurahProps) => {
   const router = useRouter();
@@ -53,7 +55,6 @@ SingleSurahProps) => {
       setIsPlaying(true);
     }
   };
-  console.log(favoriteList);
 
   return (
     <div className="flex flex-col">
@@ -76,7 +77,7 @@ SingleSurahProps) => {
               {favoriteList ? (
                 <button
                   className="pr-2 transition duration-300 ease-in-out transform hover:scale-125"
-                  onClick={(e) => handleFavorite(surah, e)}
+                  onClick={(e) => deleteFavorite(surah, e)}
                 >
                   <HeartFilledIcon className="w-5 h-5 transition duration-300 ease-in-out opacity-70 text-green-500" />
                 </button>
