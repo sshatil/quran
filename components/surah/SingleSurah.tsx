@@ -17,13 +17,16 @@ import { useAudio } from "@/store/useAudio";
 import Pause from "../icons/Pause";
 import { redirect, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { HeartIcon } from "@radix-ui/react-icons";
+import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
+import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
 
 interface SingleSurahProps {
   surah: SurahList;
   handlePlay: (id: number) => void;
   handlePause: (id: number) => void;
   handleFavorite: (surah: SurahList, e: any) => void;
+  favoriteList: boolean;
   // playing: number | null;
 }
 const noto = Noto({ subsets: ["arabic"] });
@@ -33,6 +36,7 @@ const SingleSurah = ({
   handlePlay,
   handlePause,
   handleFavorite,
+  favoriteList,
 }: // playing,
 SingleSurahProps) => {
   const router = useRouter();
@@ -49,6 +53,8 @@ SingleSurahProps) => {
       setIsPlaying(true);
     }
   };
+  console.log(favoriteList);
+
   return (
     <div className="flex flex-col">
       <Link href={`/${surah.id}`}>
@@ -66,12 +72,22 @@ SingleSurahProps) => {
                   <h3 className="text-primary">{surah.id}</h3>
                 </div>
               </div>
-              <button
-                className="pr-2 transition duration-300 ease-in-out transform hover:scale-125"
-                onClick={(e) => handleFavorite(surah, e)}
-              >
-                <HeartIcon className="w-5 h-5 transition duration-300 ease-in-out opacity-50" />
-              </button>
+
+              {favoriteList ? (
+                <button
+                  className="pr-2 transition duration-300 ease-in-out transform hover:scale-125"
+                  onClick={(e) => handleFavorite(surah, e)}
+                >
+                  <HeartFilledIcon className="w-5 h-5 transition duration-300 ease-in-out opacity-70 text-green-500" />
+                </button>
+              ) : (
+                <button
+                  className="pr-2 transition duration-300 ease-in-out transform hover:scale-125"
+                  onClick={(e) => handleFavorite(surah, e)}
+                >
+                  <HeartIcon className="w-5 h-5 transition duration-300 ease-in-out opacity-50" />
+                </button>
+              )}
             </div>
           </CardHeader>
           <CardContent>

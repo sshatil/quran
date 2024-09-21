@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 
 interface SurahProps {
   surahList: SurahList[];
+  favoriteList: SurahList[];
 }
 
-const Surah = ({ surahList }: SurahProps) => {
+const Surah = ({ surahList, favoriteList }: SurahProps) => {
   const supabase = createClient();
   const router = useRouter();
   const { setAudioFile, audioFiles, isPlaying, setIsActive, setIsPlaying } =
@@ -69,7 +70,6 @@ const Surah = ({ surahList }: SurahProps) => {
       router.push("/login");
     }
   };
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
       {surahList.map((surah) => (
@@ -79,6 +79,7 @@ const Surah = ({ surahList }: SurahProps) => {
           handlePlay={handlePlay}
           handlePause={handlePause}
           handleFavorite={handleFavorite}
+          favoriteList={favoriteList.some((f) => f?.id === surah.id)}
         />
       ))}
     </div>

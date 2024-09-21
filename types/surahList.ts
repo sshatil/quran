@@ -12,6 +12,7 @@ export interface SurahList {
     language_name: string;
     name: string;
   };
+  _id?: string;
 }
 
 // all chapter audio for specific reciter
