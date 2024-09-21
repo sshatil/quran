@@ -50,7 +50,21 @@ const Surah = ({ surahList }: SurahProps) => {
       error,
     } = await supabase.auth.getUser();
     if (!error && user) {
-      const { data, error } = await supabase.from("favorite").insert([surah]);
+      const { data, error } = await supabase.from("favorite").insert([
+        {
+          user_id: user.id,
+          id: surah.id,
+          revelation_place: surah.revelation_place,
+          revelation_order: surah.revelation_order,
+          bismillah_pre: surah.bismillah_pre,
+          name_simple: surah.name_simple,
+          name_complex: surah.name_complex,
+          name_arabic: surah.name_arabic,
+          verses_count: surah.verses_count,
+          pages: surah.pages,
+          translated_name: surah.translated_name,
+        },
+      ]);
     } else {
       router.push("/login");
     }
