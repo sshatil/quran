@@ -4,6 +4,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "../ui/button";
 import { useDownloadImage } from "@/hooks/useDownloadImage";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export default function Avatar({
   uid,
@@ -61,12 +62,18 @@ export default function Avatar({
         //   className="avatar image"
         //   style={{ height: size, width: size }}
         // />
-        <div className="w-36 h-36">
-          <img src={imageUrl} alt="" />
+        <div className="w-36 h-36 overflow-hidden">
+          <img
+            src={imageUrl}
+            alt=""
+            className="w-full h-full object-cover rounded-md"
+          />
         </div>
       ) : (
         // <p>{imageUrl}</p>
-        <div className="border" style={{ height: size, width: size }} />
+        <div className="border rounded-md w-36 h-36 flex justify-center items-center">
+          <PlusIcon className="w-6 h-6" />
+        </div>
       )}
       <div className="mt-4">
         <label

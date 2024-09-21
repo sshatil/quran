@@ -7,6 +7,7 @@ import axios from "axios";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSurah } from "@/store/useSurah";
 
 interface SurahProps {
   surahList: SurahList[];
@@ -17,7 +18,6 @@ const Surah = ({ surahList }: SurahProps) => {
   const router = useRouter();
   const { setAudioFile, audioFiles, isPlaying, setIsActive, setIsPlaying } =
     useAudio();
-
   // get specific audio file
   const handlePlay = async (id: number) => {
     try {
@@ -41,7 +41,8 @@ const Surah = ({ surahList }: SurahProps) => {
     }
   };
   // fetch favorite list
-  const [favoriteList, setFavoriteList] = useState<SurahList[]>([]);
+  const { favoriteList, setFavoriteList } = useSurah();
+  // const [favoriteList, setFavoriteList] = useState<SurahList[]>([]);
 
   const fetchFavoriteList = async () => {
     const { data: favoriteList, error } = await supabase

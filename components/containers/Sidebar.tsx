@@ -14,9 +14,11 @@ import { SurahList } from "@/types/surahList";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SurahLink from "./SurahLink";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGlobal } from "@/store/useGlobal";
 import Cross from "../icons/Cross";
+import { createClient } from "@/lib/supabase/client";
+import { useSurah } from "@/store/useSurah";
 
 export type Playlist = (typeof playlists)[number];
 
@@ -28,9 +30,28 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function Sidebar({ surahList, className }: SidebarProps) {
   const pathname = usePathname();
+  const supabase = createClient();
+  const { favoriteList, setFavoriteList } = useSurah();
+
   const [totalShowSurah, setTotalShowSurah] = useState(10);
   const { sidebarState, setSidebarState } = useGlobal();
 
+  // fetch favorite list
+  // const [favoriteList, setFavoriteList] = useState<SurahList[]>([]);
+
+  const fetchFavoriteList = async () => {
+    const { data: favoriteList, error } = await supabase
+      .from("favorite")
+      .select("*");
+    if (error) {
+      console.error("Error fetching favorite list:", error);
+    } else {
+      setFavoriteList(favoriteList ?? []);
+    }
+  };
+  useEffect(() => {
+    fetchFavoriteList();
+  }, []);
   return (
     <ScrollArea className="h-full py-6 pr-6 lg:py-8 border-r">
       <div className={cn("pb-12 z-40", className)}>
@@ -58,7 +79,7 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
               </Link>
               <Link href="/favorite">
                 <Button
-                  variant={"ghost"}
+                  variant={pathname === `/favorite` ? "default" : "ghost"}
                   className="w-full justify-start"
                   onClick={() => setSidebarState(false)}
                 >
@@ -102,17 +123,10 @@ export default function Sidebar({ surahList, className }: SidebarProps) {
             <h2 className="relative px-7 text-lg font-semibold tracking-tight">
               Favorite List
             </h2>
-            <ScrollArea className="h-[120px] px-1">
+            <ScrollArea className="h-[150px] px-1">
               <div className="space-y-1 p-2">
-                {playlists?.map((playlist, i) => (
-                  <Button
-                    disabled
-                    key={`${playlist}-${i}`}
-                    variant="ghost"
-                    className="w-full justify-start font-normal"
-                  >
-                    {playlist}
-                  </Button>
+                {favoriteList?.map((surah) => (
+                  <SurahLink key={surah.id} surah={surah} pathname={pathname} />
                 ))}
               </div>
             </ScrollArea>
