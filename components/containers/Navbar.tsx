@@ -36,6 +36,8 @@ const Navbar = ({ user }: { user?: User | null }) => {
   // get profile image
   // const imageUrl = useDownloadImage(user ?? null, profile?.avatar_url || "");
   const imageUrl = useDownloadImage(profile?.avatar_url || "");
+  // OAuth (google user image)
+  const googleAuthImageUrl = user?.user_metadata.avatar_url;
 
   return (
     <nav className="sticky top-0 z-40 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -57,9 +59,12 @@ const Navbar = ({ user }: { user?: User | null }) => {
             {user?.email ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  {imageUrl ? (
+                  {imageUrl || googleAuthImageUrl ? (
                     <Avatar className="w-ful h-full">
-                      <AvatarImage src={imageUrl} alt="Avatar" />
+                      <AvatarImage
+                        src={imageUrl || googleAuthImageUrl}
+                        alt="Avatar"
+                      />
                       <AvatarFallback>{username}</AvatarFallback>
                     </Avatar>
                   ) : (

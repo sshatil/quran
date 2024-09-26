@@ -15,10 +15,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
-import { login } from "@/app/(auth-pages)/login/actions";
+import { googleSignIn, login } from "@/app/(auth-pages)/login/actions";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import Google from "../icons/googleIcon";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -78,6 +79,22 @@ const LoginForm = () => {
             Sign up
           </Link>
         </p>
+        {/* google login */}
+        <form className="" action={googleSignIn}>
+          <Button
+            variant="outline"
+            // type="submit"
+            className="w-full"
+            loading={isLoading}
+            disabled={isLoading}
+          >
+            <div className="flex items-center gap-2">
+              <Google className="w-5 h-5" />
+              <span>Continue with Google</span>
+            </div>
+          </Button>
+        </form>
+        {/* email */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
