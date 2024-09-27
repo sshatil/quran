@@ -1,6 +1,13 @@
 import Surah from "@/components/surah/Surah";
 import { createClient } from "@/lib/supabase/server";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Favorite",
+  icons: {
+    icon: "logo.png",
+  },
+};
 const page = async () => {
   const supabase = createClient();
   const { data: favorite, error } = await supabase.from("favorite").select("*");

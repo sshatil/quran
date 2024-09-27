@@ -99,7 +99,7 @@ SingleSurahProps) => {
                 </CardTitle>
                 <CardDescription>{surah.name_simple}</CardDescription>
               </div>
-              <button className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer">
+              <button className="border rounded-full w-8 h-8 flex justify-center items-center cursor-pointer transition duration-300 ease-in-out transform hover:scale-110">
                 {/* <Play /> */}
                 {isPlaying && surah.id === audioFile.chapter_id ? (
                   <Pause
